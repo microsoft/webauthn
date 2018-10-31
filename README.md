@@ -7,7 +7,7 @@ For more details about the standards, please follow these links:
 * CTAP: https://fidoalliance.org/specs/fido-v2.0-id-20180227/fido-client-to-authenticator-protocol-v2.0-id-20180227.html
 
 
-# Having Issues
+# Having Issues?
 If you have any issues in adopting these APIs or need some clarification, please contact [FIDO OS Security Group](FIDOSEC@microsoft.com)
 
 
