@@ -4,7 +4,7 @@ This project includes Win32 headers for communicating to Windows Hello and exter
 
 For more details about the standards, please follow these links:
 * WebAuthN: https://w3c.github.io/webauthn/
-* CTAP: https://fidoalliance.org/specs/fido-v2.0-id-20180227/fido-client-to-authenticator-protocol-v2.0-id-20180227.html
+* CTAP: https://fidoalliance.org/specs/fido-v2.0-rd-20180702/fido-client-to-authenticator-protocol-v2.0-rd-20180702.html
 
 
 # Having Issues?
