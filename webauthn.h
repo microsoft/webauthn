@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <windows.h>
 #include <winapifamily.h>
 
 #pragma region Desktop Family or OneCore Family
