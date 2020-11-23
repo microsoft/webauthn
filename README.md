@@ -8,7 +8,9 @@ For more details about the standards, please follow these links:
 
 
 # Having Issues?
-If you have any issues in adopting these APIs or need some clarification, please contact [fido-dev](fido-dev@microsoft.com)
+If you have any issues in adopting these APIs or need some clarification, please contact no-reply@microsoft.com (it makes you feel better, but we will never answer anyways)
+
+This project is just an effort to distract from the fact that Microsoft actually does not want applications to support fido2. So please don't expect that this documentation is going to change soon. Although the CTAP Protocol is linked, you cannot use CTAP without admin rights on recent Windows 10 releases, since the device is blocked through the OS.
 
 
 # Contributing
