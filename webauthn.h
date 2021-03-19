@@ -465,7 +465,7 @@ typedef struct _WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS {
     // Large Blob Support: none, required or preferred
     //
     // NTE_INVALID_PARAMETER when large blob required or preferred and
-    //   bRequireResidentKey isn't set to TRUE
+    //   both bRequireResidentKey and bPreferResidentKey are set to FALSE.
     DWORD dwLargeBlobSupport;
 
     // Optional. Prefer key to be resident. Defaulting to FALSE. When TRUE,
