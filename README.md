@@ -1,9 +1,9 @@
 # Description
 
-This project includes Win32 headers for communicating to Windows Hello and external secruity keys as part of WebAuthN and CTAP specification.
+This project includes Win32 headers for communicating to Windows Hello and external secruity keys as part of WebAuthn and CTAP specification.
 
 For more details about the standards, please follow these links:
-* WebAuthN: https://w3c.github.io/webauthn/
+* WebAuthn: https://w3c.github.io/webauthn/
 * CTAP: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html
 
 
