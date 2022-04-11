@@ -93,6 +93,7 @@ extern "C" {
 //      APIs:
 //          - WebAuthNGetPlatformCredentialList
 //          - WebAuthNFreePlatformCredentialList
+//          - WebAuthNDeletePlatformCredential
 //
 
 #define WEBAUTHN_API_CURRENT_VERSION    WEBAUTHN_API_VERSION_4
@@ -304,6 +305,9 @@ typedef struct _WEBAUTHN_CREDENTIAL_DETAILS {
 
     // User Info
     PWEBAUTHN_USER_ENTITY_INFORMATION   pUserInformation;
+
+    // Removable or not.
+    BOOL bRemovable;
 } WEBAUTHN_CREDENTIAL_DETAILS, *PWEBAUTHN_CREDENTIAL_DETAILS;
 typedef const WEBAUTHN_CREDENTIAL_DETAILS *PCWEBAUTHN_CREDENTIAL_DETAILS;
 
@@ -321,7 +325,7 @@ typedef struct _WEBAUTHN_GET_CREDENTIALS_OPTIONS {
     // Version of this structure, to allow for modifications in the future.
     DWORD dwVersion;
 
-    // RPID
+    // Optional.
     LPCWSTR pwszRpId;
 
     // Optional. BrowserInPrivate Mode. Defaulting to FALSE.
@@ -939,6 +943,7 @@ WINAPI
 WebAuthNCancelCurrentOperation(
     _In_ const GUID* pCancellationId);
 
+// Returns NTE_NOT_FOUND when credentials are not found.
 HRESULT
 WINAPI
 WebAuthNGetPlatformCredentialList(
@@ -949,6 +954,13 @@ void
 WINAPI
 WebAuthNFreePlatformCredentialList(
     _In_ PWEBAUTHN_CREDENTIAL_DETAILS_LIST  pCredentialDetailsList);
+
+HRESULT
+WINAPI
+WebAuthNDeletePlatformCredential(
+    _In_ DWORD cbCredentialId,
+    _In_reads_bytes_(cbCredentialId) const BYTE *pbCredentialId
+    );
 
 //
 // Returns the following Error Names:
