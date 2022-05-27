@@ -342,7 +342,7 @@ typedef const WEBAUTHN_GET_CREDENTIALS_OPTIONS *PCWEBAUTHN_GET_CREDENTIALS_OPTIO
 // SALT values below by default are converted into RAW Hmac-Secret values as per PRF extension.
 //   - SHA-256(UTF8Encode("WebAuthn PRF") || 0x00 || Value)
 //
-// Set WEBAUTHN_CTAP_HMAC_SECRET_VALUES_FLAG in dwFlags in WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS,
+// Set WEBAUTHN_AUTHENTICATOR_HMAC_SECRET_VALUES_FLAG in dwFlags in WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS,
 //   if caller wants to provide RAW Hmac-Secret SALT values directly. In that case,
 //   values if provided MUST be of WEBAUTHN_CTAP_ONE_HMAC_SECRET_LENGTH size.
 
