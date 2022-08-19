@@ -165,6 +165,11 @@ typedef struct _WEBAUTHN_CLIENT_DATA {
     // This field is required and should be set to CURRENT_VERSION above.
     DWORD dwVersion;
 
+    // NOTE: The reference to JSON are for historic reasons, since
+    // implementations are NOT supposed to parse this data in any way.
+    // The data simply hashed using the specified algorithm ID resulting
+    // in the FIDO "clientDataHash" input field.
+    
     // Size of the pbClientDataJSON field.
     DWORD cbClientDataJSON;
     // UTF-8 encoded JSON serialization of the client data.
