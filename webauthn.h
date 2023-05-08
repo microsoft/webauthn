@@ -65,6 +65,11 @@ extern "C" {
 //          - WebAuthNCancelCurrentOperation
 //          - WebAuthNGetErrorName
 //          - WebAuthNGetW3CExceptionDOMError
+//      Transports:
+//          - WEBAUTHN_CTAP_TRANSPORT_USB
+//          - WEBAUTHN_CTAP_TRANSPORT_NFC
+//          - WEBAUTHN_CTAP_TRANSPORT_BLE
+//          - WEBAUTHN_CTAP_TRANSPORT_INTERNAL
 
 #define WEBAUTHN_API_VERSION_2          2
 // WEBAUTHN_API_VERSION_2 : Delta From WEBAUTHN_API_VERSION_1
@@ -90,13 +95,31 @@ extern "C" {
 //          - WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS    :   5
 //          - WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS      :   6
 //          - WEBAUTHN_ASSERTION                                :   3
+//          - WEBAUTHN_CREDENTIAL_DETAILS                       :   1
 //      APIs:
 //          - WebAuthNGetPlatformCredentialList
 //          - WebAuthNFreePlatformCredentialList
 //          - WebAuthNDeletePlatformCredential
 //
 
-#define WEBAUTHN_API_CURRENT_VERSION    WEBAUTHN_API_VERSION_4
+#define WEBAUTHN_API_VERSION_5          5
+// WEBAUTHN_API_VERSION_5 : Delta From WEBAUTHN_API_VERSION_4
+//      Data Structures and their sub versions:
+//          - WEBAUTHN_CREDENTIAL_DETAILS                       :   2
+//      Extension Changes:
+//          - Enabled LARGE_BLOB Support
+//
+
+#define WEBAUTHN_API_VERSION_6          6
+// WEBAUTHN_API_VERSION_6 : Delta From WEBAUTHN_API_VERSION_5
+//      Data Structures and their sub versions:
+//          - WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS    :   6
+//          - WEBAUTHN_CREDENTIAL_ATTESTATION                   :   5
+//          - WEBAUTHN_ASSERTION                                :   4
+//      Transports:
+//          - WEBAUTHN_CTAP_TRANSPORT_HYBRID
+
+#define WEBAUTHN_API_CURRENT_VERSION    WEBAUTHN_API_VERSION_6
 
 //+------------------------------------------------------------------------------------------
 // Information about an RP Entity
@@ -251,7 +274,8 @@ typedef const WEBAUTHN_CREDENTIALS *PCWEBAUTHN_CREDENTIALS;
 #define WEBAUTHN_CTAP_TRANSPORT_BLE         0x00000004
 #define WEBAUTHN_CTAP_TRANSPORT_TEST        0x00000008
 #define WEBAUTHN_CTAP_TRANSPORT_INTERNAL    0x00000010
-#define WEBAUTHN_CTAP_TRANSPORT_FLAGS_MASK  0x0000001F
+#define WEBAUTHN_CTAP_TRANSPORT_HYBRID      0x00000020
+#define WEBAUTHN_CTAP_TRANSPORT_FLAGS_MASK  0x0000002F
 
 #define WEBAUTHN_CREDENTIAL_EX_CURRENT_VERSION                         1
 
@@ -289,7 +313,8 @@ typedef const WEBAUTHN_CREDENTIAL_LIST *PCWEBAUTHN_CREDENTIAL_LIST;
 //-------------------------------------------------------------------------------------------
 
 #define WEBAUTHN_CREDENTIAL_DETAILS_VERSION_1           1
-#define WEBAUTHN_CREDENTIAL_DETAILS_CURRENT_VERSION     WEBAUTHN_CREDENTIAL_DETAILS_VERSION_1
+#define WEBAUTHN_CREDENTIAL_DETAILS_VERSION_2           2
+#define WEBAUTHN_CREDENTIAL_DETAILS_CURRENT_VERSION     WEBAUTHN_CREDENTIAL_DETAILS_VERSION_2
 
 typedef struct _WEBAUTHN_CREDENTIAL_DETAILS {
     // Version of this structure, to allow for modifications in the future.
@@ -308,6 +333,13 @@ typedef struct _WEBAUTHN_CREDENTIAL_DETAILS {
 
     // Removable or not.
     BOOL bRemovable;
+
+    //
+    // The following fields have been added in WEBAUTHN_CREDENTIAL_DETAILS_VERSION_2
+    //
+
+    // Backed Up or not.
+    BOOL bBackedUp;
 } WEBAUTHN_CREDENTIAL_DETAILS, *PWEBAUTHN_CREDENTIAL_DETAILS;
 typedef const WEBAUTHN_CREDENTIAL_DETAILS *PCWEBAUTHN_CREDENTIAL_DETAILS;
 
@@ -518,7 +550,8 @@ typedef const WEBAUTHN_EXTENSIONS *PCWEBAUTHN_EXTENSIONS;
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_3            3
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_4            4
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_5            5
-#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_CURRENT_VERSION      WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_5
+#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_6            6
+#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_CURRENT_VERSION      WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_6
 
 typedef struct _WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS {
     // Version of this structure, to allow for modifications in the future.
@@ -586,6 +619,13 @@ typedef struct _WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS {
 
     // Optional. BrowserInPrivate Mode. Defaulting to FALSE.
     BOOL bBrowserInPrivateMode;
+
+    //
+    // The following fields have been added in WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_6
+    //
+
+    // Enable PRF
+    BOOL bEnablePrf;
 
 } WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS, *PWEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS;
 typedef const WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS *PCWEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS;
@@ -754,7 +794,8 @@ typedef const WEBAUTHN_COMMON_ATTESTATION *PCWEBAUTHN_COMMON_ATTESTATION;
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_2               2
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_3               3
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_4               4
-#define WEBAUTHN_CREDENTIAL_ATTESTATION_CURRENT_VERSION         WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_4
+#define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_5               5
+#define WEBAUTHN_CREDENTIAL_ATTESTATION_CURRENT_VERSION         WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_5
 
 typedef struct _WEBAUTHN_CREDENTIAL_ATTESTATION {
     // Version of this structure, to allow for modifications in the future.
@@ -817,6 +858,12 @@ typedef struct _WEBAUTHN_CREDENTIAL_ATTESTATION {
     BOOL bLargeBlobSupported;
     BOOL bResidentKey;
 
+    //
+    // Following fields have been added in WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_5
+    //
+
+    BOOL bPrfEnabled;
+
 } WEBAUTHN_CREDENTIAL_ATTESTATION, *PWEBAUTHN_CREDENTIAL_ATTESTATION;
 typedef const WEBAUTHN_CREDENTIAL_ATTESTATION *PCWEBAUTHN_CREDENTIAL_ATTESTATION;
 
@@ -839,7 +886,8 @@ typedef const WEBAUTHN_CREDENTIAL_ATTESTATION *PCWEBAUTHN_CREDENTIAL_ATTESTATION
 #define WEBAUTHN_ASSERTION_VERSION_1                            1
 #define WEBAUTHN_ASSERTION_VERSION_2                            2
 #define WEBAUTHN_ASSERTION_VERSION_3                            3
-#define WEBAUTHN_ASSERTION_CURRENT_VERSION                      WEBAUTHN_ASSERTION_VERSION_3
+#define WEBAUTHN_ASSERTION_VERSION_4                            4
+#define WEBAUTHN_ASSERTION_CURRENT_VERSION                      WEBAUTHN_ASSERTION_VERSION_4
 
 typedef struct _WEBAUTHN_ASSERTION {
     // Version of this structure, to allow for modifications in the future.
@@ -884,6 +932,14 @@ typedef struct _WEBAUTHN_ASSERTION {
     //
 
     PWEBAUTHN_HMAC_SECRET_SALT pHmacSecret;
+
+    //
+    // Following fields have been added in WEBAUTHN_ASSERTION_VERSION_4
+    //
+
+    // One of the WEBAUTHN_CTAP_TRANSPORT_* bits will be set corresponding to
+    // the transport that was used.
+    DWORD dwUsedTransport;
 
 } WEBAUTHN_ASSERTION, *PWEBAUTHN_ASSERTION;
 typedef const WEBAUTHN_ASSERTION *PCWEBAUTHN_ASSERTION;
