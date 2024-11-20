@@ -1,9 +1,3 @@
----
-title: Experimental API
-ms.date: 11/22/2024
-ms.topic: article
-keywords: windows 11, webauthn
----
 # Experimental APIs
 
 Experimental APIs are in the early stages of design and are likely to change as the owners incorporate feedback and add support for additional scenarios.
