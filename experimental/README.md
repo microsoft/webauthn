@@ -18,8 +18,9 @@ If you've tried an experimental API and would like to provide feedback, use the 
 
 ## Operating System Requirements
 
-Windows 11 Insider Edition Beta Channel. Build Major Version = 22635 and Minor Version >= 4515.
-Windows 11 Insider Edition Dev Channel. Build Major Version = 26120 and Minor Version >= 2510.
+Windows 11 Insider Edition Beta Channel: Build Major Version = 22635 and Minor Version >= 4515.
+
+Windows 11 Insider Edition Dev Channel: Build Major Version = 26120 and Minor Version >= 2510.
 
 ## Related topics
 
