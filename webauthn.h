@@ -127,7 +127,15 @@ extern "C" {
 //          - WEBAUTHN_CREDENTIAL_ATTESTATION                   :   6
 //          - WEBAUTHN_ASSERTION                                :   5
 
-#define WEBAUTHN_API_CURRENT_VERSION    WEBAUTHN_API_VERSION_7
+#define WEBAUTHN_API_VERSION_8          8
+// WEBAUTHN_API_VERSION_8 : Delta From WEBAUTHN_API_VERSION_7
+//      Data Structures and their sub versions:
+//          - WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS    :   8
+//          - WEBAUTHN_CREDENTIAL_DETAILS                       :   3
+//          - WEBAUTHN_CREDENTIAL_ATTESTATION                   :   7
+//          - WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS      :   8
+
+#define WEBAUTHN_API_CURRENT_VERSION    WEBAUTHN_API_VERSION_8
 
 //+------------------------------------------------------------------------------------------
 // Information about an RP Entity
@@ -147,7 +155,7 @@ typedef struct _WEBAUTHN_RP_ENTITY_INFORMATION {
     // This field is required.
     PCWSTR pwszName;
 
-    // Optional URL pointing to RP's logo. 
+    // Optional URL pointing to RP's logo.
     PCWSTR pwszIcon;
 } WEBAUTHN_RP_ENTITY_INFORMATION, *PWEBAUTHN_RP_ENTITY_INFORMATION;
 typedef const WEBAUTHN_RP_ENTITY_INFORMATION *PCWEBAUTHN_RP_ENTITY_INFORMATION;
@@ -362,7 +370,8 @@ typedef const CTAPCBOR_HYBRID_STORAGE_LINKED_DATA *PCCTAPCBOR_HYBRID_STORAGE_LIN
 
 #define WEBAUTHN_CREDENTIAL_DETAILS_VERSION_1           1
 #define WEBAUTHN_CREDENTIAL_DETAILS_VERSION_2           2
-#define WEBAUTHN_CREDENTIAL_DETAILS_CURRENT_VERSION     WEBAUTHN_CREDENTIAL_DETAILS_VERSION_2
+#define WEBAUTHN_CREDENTIAL_DETAILS_VERSION_3           3
+#define WEBAUTHN_CREDENTIAL_DETAILS_CURRENT_VERSION     WEBAUTHN_CREDENTIAL_DETAILS_VERSION_3
 
 typedef struct _WEBAUTHN_CREDENTIAL_DETAILS {
     // Version of this structure, to allow for modifications in the future.
@@ -388,6 +397,20 @@ typedef struct _WEBAUTHN_CREDENTIAL_DETAILS {
 
     // Backed Up or not.
     BOOL bBackedUp;
+
+    //
+    // The following fields have been added in WEBAUTHN_CREDENTIAL_DETAILS_VERSION_3
+    //
+    PCWSTR pwszAuthenticatorName;
+
+    // The logo is expected to be in the svg format
+    DWORD cbAuthenticatorLogo;
+    _Field_size_bytes_(cbAuthenticatorLogo)
+    PBYTE pbAuthenticatorLogo;
+
+    // ThirdPartyPayment Credential or not.
+    BOOL bThirdPartyPayment;
+
 } WEBAUTHN_CREDENTIAL_DETAILS, *PWEBAUTHN_CREDENTIAL_DETAILS;
 typedef const WEBAUTHN_CREDENTIAL_DETAILS *PCWEBAUTHN_CREDENTIAL_DETAILS;
 
@@ -600,7 +623,8 @@ typedef const WEBAUTHN_EXTENSIONS *PCWEBAUTHN_EXTENSIONS;
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_5            5
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_6            6
 #define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_7            7
-#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_CURRENT_VERSION      WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_7
+#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_8            8
+#define WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_CURRENT_VERSION      WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_8
 
 typedef struct _WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS {
     // Version of this structure, to allow for modifications in the future.
@@ -687,6 +711,24 @@ typedef struct _WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS {
     DWORD cbJsonExt;
     _Field_size_bytes_(cbJsonExt)
     PBYTE pbJsonExt;
+
+    //
+    // The following fields have been added in WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_VERSION_8
+    //
+
+    // PRF extension "eval" values which will be converted into HMAC-SECRET values according to WebAuthn Spec.
+    // Set WEBAUTHN_AUTHENTICATOR_HMAC_SECRET_VALUES_FLAG in dwFlags above, if caller wants to provide RAW Hmac-Secret SALT values directly.
+    // In that case, values provided MUST be of WEBAUTHN_CTAP_ONE_HMAC_SECRET_LENGTH size.
+    PWEBAUTHN_HMAC_SECRET_SALT pPRFGlobalEval;
+
+    // PublicKeyCredentialHints (https://w3c.github.io/webauthn/#enum-hints)
+    DWORD cCredentialHints;
+    _Field_size_(cCredentialHints)
+    LPCWSTR *ppwszCredentialHints;
+
+    // Enable ThirdPartyPayment
+    BOOL bThirdPartyPayment;
+
 } WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS, *PWEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS;
 typedef const WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS *PCWEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS;
 
@@ -702,7 +744,8 @@ typedef const WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS *PCWEBAUTHN_AUTHENT
 #define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_5          5
 #define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_6          6
 #define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_7          7
-#define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_CURRENT_VERSION    WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_7
+#define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_8          8
+#define WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_CURRENT_VERSION    WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_8
 
 /*
     Information about flags.
@@ -793,6 +836,16 @@ typedef struct _WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS {
     DWORD cbJsonExt;
     _Field_size_bytes_(cbJsonExt)
     PBYTE pbJsonExt;
+
+    //
+    // The following fields have been added in WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS_VERSION_8
+    //
+
+    // PublicKeyCredentialHints (https://w3c.github.io/webauthn/#enum-hints)
+    DWORD cCredentialHints;
+    _Field_size_(cCredentialHints)
+    LPCWSTR *ppwszCredentialHints;
+
 } WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS,  *PWEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS;
 typedef const WEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS  *PCWEBAUTHN_AUTHENTICATOR_GET_ASSERTION_OPTIONS;
 
@@ -871,7 +924,8 @@ typedef const WEBAUTHN_COMMON_ATTESTATION *PCWEBAUTHN_COMMON_ATTESTATION;
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_4               4
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_5               5
 #define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_6               6
-#define WEBAUTHN_CREDENTIAL_ATTESTATION_CURRENT_VERSION         WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_6
+#define WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_7               7
+#define WEBAUTHN_CREDENTIAL_ATTESTATION_CURRENT_VERSION         WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_7
 
 typedef struct _WEBAUTHN_CREDENTIAL_ATTESTATION {
     // Version of this structure, to allow for modifications in the future.
@@ -947,6 +1001,16 @@ typedef struct _WEBAUTHN_CREDENTIAL_ATTESTATION {
     DWORD cbUnsignedExtensionOutputs;
     _Field_size_bytes_(cbUnsignedExtensionOutputs)
     PBYTE pbUnsignedExtensionOutputs;
+
+    //
+    // Following fields have been added in WEBAUTHN_CREDENTIAL_ATTESTATION_VERSION_7
+    //
+
+    PWEBAUTHN_HMAC_SECRET_SALT pHmacSecret;
+
+    // ThirdPartyPayment Credential or not.
+    BOOL bThirdPartyPayment;
+
 } WEBAUTHN_CREDENTIAL_ATTESTATION, *PWEBAUTHN_CREDENTIAL_ATTESTATION;
 typedef const WEBAUTHN_CREDENTIAL_ATTESTATION *PCWEBAUTHN_CREDENTIAL_ATTESTATION;
 
